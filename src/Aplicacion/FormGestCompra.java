@@ -5,6 +5,10 @@
  */
 package Aplicacion;
 
+import java.util.ArrayList;
+import Libreria.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Administrador
@@ -12,10 +16,62 @@ package Aplicacion;
 public class FormGestCompra extends javax.swing.JFrame {
 
     /**
+     * Agrega clientes al listado de este formulario.
+     */
+    private void InitClientes() {
+        
+        // Eva
+        Cliente c1 = new Cliente();
+        c1.setNombre("Eva");
+        c1.setApPaterno("Leiva");
+        c1.setApMaterno("Gil");
+        c1.setRun("11.111.111-1");
+        c1.setTipoCliente(TipoCliente.Normal);
+        Cliente.agregarCliente(c1);
+        
+        // Guille
+        Cliente c2 = new Cliente();
+        c2.setNombre("Guillermo");
+        c2.setApPaterno("Barriga");
+        c2.setApMaterno("Placencia");
+        c2.setRun("22.222.222-2");
+        c2.setTipoCliente(TipoCliente.Normal);
+        Cliente.agregarCliente(c2);
+        
+        // Seba
+        Cliente c3 = new Cliente();
+        c3.setNombre("Sebastián");
+        c3.setApPaterno("Pérez");
+        c3.setApMaterno("Canales");
+        c3.setRun("33.333.333-3");
+        c3.setTipoCliente(TipoCliente.Normal);
+        Cliente.agregarCliente(c3);
+        
+        // Bladi
+        Cliente c4 = new Cliente();
+        c4.setNombre("Bladimir");
+        c4.setApPaterno("Fernández");
+        c4.setApMaterno("Montecinos");
+        c4.setRun("44.444.444-4");
+        c4.setTipoCliente(TipoCliente.Premium);
+        Cliente.agregarCliente(c4);
+    }
+    
+    private void initComboBoxTipoClientes() {
+        for (TipoCliente tipo : TipoCliente.values()) {
+            this.cbTipoCliente.addItem(tipo.toString());
+        }
+    }
+    
+    /**
      * Creates new form FormGestCompra
      */
     public FormGestCompra() {
         initComponents();
+        
+        InitClientes();
+        
+        initComboBoxTipoClientes();
     }
 
     /**
@@ -31,23 +87,23 @@ public class FormGestCompra extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtRun = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtApellidoPaterno = new javax.swing.JTextField();
+        txtApellidoMaterno = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbTipoCliente = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtMontoCompra = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        txtTotalDescuento = new javax.swing.JTextField();
+        txtSubTotal = new javax.swing.JTextField();
+        txtIva = new javax.swing.JTextField();
+        txtPago = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -64,21 +120,15 @@ public class FormGestCompra extends javax.swing.JFrame {
 
         jLabel4.setText("Apellido Materno");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
-
-        jTextField4.setText("jTextField4");
+        txtRun.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtRunFocusLost(evt);
+            }
+        });
 
         jLabel5.setText("Tipo Cliente");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel6.setText("Monto Compra");
-
-        jTextField5.setText("jTextField5");
 
         jLabel7.setText("Total Descuento");
 
@@ -88,15 +138,12 @@ public class FormGestCompra extends javax.swing.JFrame {
 
         jLabel10.setText("Pago");
 
-        jTextField6.setText("jTextField6");
-
-        jTextField7.setText("jTextField7");
-
-        jTextField8.setText("jTextField8");
-
-        jTextField9.setText("jTextField9");
-
         jButton1.setText("CONSULTAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("RESTABLECER");
 
@@ -129,12 +176,14 @@ public class FormGestCompra extends javax.swing.JFrame {
                                     .addComponent(jLabel6))
                                 .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtApellidoPaterno)
+                                    .addComponent(txtApellidoMaterno)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtRun, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(txtMontoCompra)
+                                    .addComponent(cbTipoCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,18 +193,19 @@ public class FormGestCompra extends javax.swing.JFrame {
                                     .addComponent(jLabel10))
                                 .addGap(35, 35, 35)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(txtTotalDescuento)
+                                    .addComponent(txtSubTotal)
+                                    .addComponent(txtIva)
+                                    .addComponent(txtPago))
+                                .addGap(4, 4, 4)))
+                        .addGap(20, 20, 20)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addGap(55, 55, 55)
+                .addGap(40, 40, 40)
                 .addComponent(jButton3)
                 .addGap(51, 51, 51))
         );
@@ -167,61 +217,100 @@ public class FormGestCompra extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtRun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMontoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(22, 22, 22))))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Cliente cliente = Cliente.buscarClientePorRun(this.txtRun.getText());
+        Compra compra = new Compra();
+        
+        int monto = Integer.parseInt(this.txtMontoCompra.getText());
+        
+        compra.setCliente(cliente);
+        compra.setMonto(monto);
+        
+        int totalDescuento = compra.obtenerDescuento();
+        int subtotal = compra.obtenerSubtotal();
+        int iva = compra.obtenerIVA();
+        int pago = compra.obtenerPago();
+        
+        this.txtTotalDescuento.setText(Integer.toString(totalDescuento));
+        this.txtSubTotal.setText(Integer.toString(subtotal));
+        this.txtIva.setText(Integer.toString(iva));
+        this.txtPago.setText(Integer.toString(pago));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtRunFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtRunFocusLost
+        Cliente c = Cliente.buscarClientePorRun(this.txtRun.getText());
+        
+        // Si no se encuentra el R.U.N. ingresado, se muestra un aviso;
+        // de lo contrario, se cargan los datos del cliente asociado.
+        if (null == c) {
+            JOptionPane.showMessageDialog(this, "El cliente no existe.\nComplete el formulario para continuar.");
+            
+            // Como se van a ingresar los datos manualmente, se posiciona el
+            // cursor en el nombre del cliente.
+            this.txtNombre.requestFocus();
+        }
+        else {
+            this.txtNombre.setText(c.getNombre());
+            this.txtApellidoPaterno.setText(c.getApPaterno());
+            this.txtApellidoMaterno.setText(c.getApMaterno());
+            this.cbTipoCliente.setSelectedIndex(c.getTipoCliente().ordinal());
+            
+            // Dado que se cargaron los datos, el siguiente dato será el monto
+            // de la compra, por lo que se posiciona el cursor en ese control.
+            this.txtMontoCompra.requestFocus();
+        }
+    }//GEN-LAST:event_txtRunFocusLost
 
     /**
      * @param args the command line arguments
@@ -259,10 +348,10 @@ public class FormGestCompra extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbTipoCliente;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -275,14 +364,14 @@ public class FormGestCompra extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField txtApellidoMaterno;
+    private javax.swing.JTextField txtApellidoPaterno;
+    private javax.swing.JTextField txtIva;
+    private javax.swing.JTextField txtMontoCompra;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPago;
+    private javax.swing.JTextField txtRun;
+    private javax.swing.JTextField txtSubTotal;
+    private javax.swing.JTextField txtTotalDescuento;
     // End of variables declaration//GEN-END:variables
 }
