@@ -1,26 +1,41 @@
-
 package Libreria;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 
 public class Compra implements IPago {
-    static final float PORC_IVA=0.19F;
+
+    private static float PORC_IVA = 0.19F;
+
     // Atributos
     private Cliente cliente;
+    private Date fecha;
     private int monto;
+    private String numero;
+
     // Constructor
     public Compra() {
-        cliente=new Cliente();
-        monto=0;
+        cliente = new Cliente();
+        numero = "";
+        fecha = new Date();
+        monto = 0;
     }
-    // Propiedades
 
+    // Propiedades
     public Cliente getCliente() {
         return cliente;
     }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public int getMonto() {
@@ -30,36 +45,69 @@ public class Compra implements IPago {
     public void setMonto(int monto) {
         this.monto = monto;
     }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public static float getPORC_IVA() {
+        return PORC_IVA;
+    }
+
+    public static void setPORC_IVA(float aPORC_IVA) {
+        PORC_IVA = aPORC_IVA;
+    }
+
     // Métodos
-    public int obtenerDescuento(){
-        switch (cliente.getTipoCliente()){
+    @Override
+    public int obtenerDescuento() {
+        TipoCliente tipo = getCliente().getTipoCliente();
+        
+        switch (getCliente().getTipoCliente()) {
             case Normal:
-                return Math.round(monto * PORC_NORMAL);
+                return Math.round(getMonto() * PORC_NORMAL);
             case Silver:
-                return Math.round(monto * PORC_SILVER);
+                return Math.round(getMonto() * PORC_SILVER);
             case Gold:
-                return Math.round(monto * PORC_GOLD);
+                return Math.round(getMonto() * PORC_GOLD);
+            case Premium:
+                return Math.round(getMonto() * PORC_PREMIUM);
             default:
-                return Math.round(monto * PORC_PREMIUM);                
+                return getMonto();
         }
     }
-    public int obtenerSubtotal(){
-        return monto - obtenerDescuento();
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public int obtenerSubtotal() {
+        return getMonto() - obtenerDescuento();
     }
+
+    @Override
     public int obtenerIVA() {
-        return Math.round(obtenerSubtotal() * PORC_IVA);
+        return Math.round(obtenerSubtotal() * getPORC_IVA());
     }
-    public int obtenerPago(){
+
+    @Override
+    public int obtenerPago() {
         return obtenerSubtotal() + obtenerIVA();
     }
+
     public String obtenerDatos() {
-        String patronM="$##,###,###";
+        String patronM = "$##,###,###";
         DecimalFormat formatM = new DecimalFormat(patronM);
-        String datos="";
-        datos +=cliente.obtenerDatos();
-        datos +="Subtotal     : " + formatM.format(obtenerSubtotal()) + "\n";         
-        datos +="Monto IVA    : " + formatM.format(obtenerIVA()) + "\n";  
-        datos +="Monto Total  : " + formatM.format(obtenerPago()) + "\n";  
-        return datos;        
+        String datos = "";
+        datos += getCliente().obtenerDatos();
+        datos += "Subtotal     : " + formatM.format(obtenerSubtotal()) + "\n";
+        datos += "Monto IVA    : " + formatM.format(obtenerIVA()) + "\n";
+        datos += "Monto Total  : " + formatM.format(obtenerPago()) + "\n";
+        return datos;
     }
 }

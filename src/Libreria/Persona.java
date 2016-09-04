@@ -1,21 +1,23 @@
-
 package Libreria;
 
 public abstract class Persona {
+
     // Atributos
+
     private String run;
     private String nombre;
     private String apPaterno;
     private String apMaterno;
+
     // Constructor
     public Persona() {
-        run="";
-        nombre="";
-        apPaterno="";
-        apMaterno="";        
+        run = "";
+        nombre = "";
+        apPaterno = "";
+        apMaterno = "";
     }
-    // Propiedades
 
+// Propiedades
     public String getRun() {
         return run;
     }
@@ -46,7 +48,8 @@ public abstract class Persona {
 
     public void setApMaterno(String apMaterno) {
         this.apMaterno = apMaterno;
-    }    
+    }
+
     // Métodos abstractos
     abstract String obtenerDatos();
 }

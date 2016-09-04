@@ -5,10 +5,10 @@ import Libreria.*;
 public class GestionCompra {
     public static void main(String[] args){
         // Datos Cliente
-        String run="11111111-1";
-        String nombre="Juan";
-        String apPaterno="Diaz";
-        String apMaterno="Flores";
+        String run="22222222-2";
+        String nombre="Eva";
+        String apPaterno="Lechu";
+        String apMaterno="Master";
         TipoCliente tipoCliente=TipoCliente.Premium;
         // Datos Compra
         int monto=100000;
